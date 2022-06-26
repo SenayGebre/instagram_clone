@@ -16,7 +16,7 @@ export class Register extends Component {
     }
 
     onSignUp() {
-        console.log("senay")
+        // console.log("senay")
     }
 
     render() {
