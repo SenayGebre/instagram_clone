@@ -1,4 +1,4 @@
-import firebase from "firebase/compat/app";
+import { getApps, getApp, initializeApp } from "firebase/app";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBa0SCgZfqlVRR1rKIU7t-3DcBxKdQ1fqg",
@@ -10,8 +10,6 @@ const firebaseConfig = {
   };
 
 
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig)
-}
+    const firebaseApp = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-export {firebase}
+export {firebaseApp}

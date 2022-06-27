@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { TextInput } from 'react-native-gesture-handler';
-import { Button, View } from 'react-native-web';
+import { Button, View } from 'react-native';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth } from  "firebase/auth";
 
-export class Register extends Component {
+export default class RegisterScreen extends Component {
     constructor(props) {
         super(props);
 
@@ -16,15 +17,15 @@ export class Register extends Component {
     }
 
     onSignUp() {
-        // console.log("senay")
+        console.log("senay");
     }
 
     render() {
         return (
             <View>
-                <TextInput placeholder='please enter name' onChangeText={() => this.setState({name})} />
-                <TextInput placeholder='please enter email' onChangeText={() => this.setState({email})} />
-                <TextInput placeholder='please enter password' secureTextEntry={true} onChangeText={() => this.setState({password})} />
+                <TextInput placeholder='please enter name' onChangeText={(name) => this.setState({name})} />
+                <TextInput placeholder='please enter email' onChangeText={(email) => this.setState({email})} />
+                <TextInput placeholder='please enter password' secureTextEntry={true} onChangeText={(password) => this.setState({password})} />
                 <Button title = "Sign Up" onPress={()=> this.onSignUp()}/>
             </View>
         )
