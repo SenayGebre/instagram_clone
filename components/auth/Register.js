@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { TextInput } from 'react-native-gesture-handler';
 import { Button, View } from 'react-native';
-import { createUserWithEmailAndPassword, getAuth } from  "firebase/auth";
-import { firebaseAuth, firebaseApp,firebaseDB } from "../../src/firebase/config";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { firebaseAuth, firebaseApp, firebaseDB, firestoreDB } from "../../src/firebase/config";
 import { getDatabase, ref, set } from "firebase/database";
+import { addDoc, collection, setDoc, doc} from "firebase/firestore";
 
 export default class RegisterScreen extends Component {
     constructor(props) {
@@ -20,32 +21,36 @@ export default class RegisterScreen extends Component {
 
     onSignUp() {
         const { name, email, password } = this.state;
-        
-        createUserWithEmailAndPassword(firebaseAuth,email, password).then((result) => {
-            writeUserData(result.user.uid, result.user.name, result.user.email, "");
-        }).catch((error) => {console.log('error',error)});
+
+        createUserWithEmailAndPassword(firebaseAuth, email, password).then((result) => {
+            writeUserData(result.user.uid, name, result.user.email);
+        }).catch((error) => { console.log('error', error) });
     }
 
     render() {
         return (
-            <View style= {{flex: 1,justifyContent: 'center'}}>
-                <TextInput placeholder='please enter name' onChangeText={(name) => this.setState({name})} />
-                <TextInput placeholder='please enter email' onChangeText={(email) => this.setState({email})} />
-                <TextInput placeholder='please enter password' secureTextEntry={true} onChangeText={(password) => this.setState({password})} />
-                <Button title = "Sign Up" onPress={()=> this.onSignUp()}/>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+                <TextInput placeholder='please enter name' onChangeText={(name) => this.setState({ name })} />
+                <TextInput placeholder='please enter email' onChangeText={(email) => this.setState({ email })} />
+                <TextInput placeholder='please enter password' secureTextEntry={true} onChangeText={(password) => this.setState({ password })} />
+                <Button title="Sign Up" onPress={() => this.onSignUp()} />
             </View>
         )
     }
 
 
-    
+
 }
 
-function writeUserData(userId, name, email, imageUrl) {
-    const db = getDatabase();
-    set(ref(db, 'users/' + userId), {
-      username: name,
-      email: email,
-      profile_picture : imageUrl
+function writeUserData(userId, name, email) {
+    console.log('writeUserData', userId, name, email);
+    // Add a new document in collection "cities"
+ setDoc(doc(firestoreDB, "users", userId), {
+        name: name,
+        email: email
+    }).then(() => {
+        console.log("Document successfully written!");
+    }).catch((error) => {
+        console.log("Error writing document: ", error);
     });
-  }
+}
