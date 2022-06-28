@@ -23,7 +23,7 @@ export default class RegisterScreen extends Component {
         const { name, email, password } = this.state;
 
         createUserWithEmailAndPassword(firebaseAuth, email, password).then((result) => {
-            writeUserData(result.user.uid, name, result.user.email);
+            writeUserData(name, result.user.email);
         }).catch((error) => { console.log('error', error) });
     }
 
@@ -42,10 +42,9 @@ export default class RegisterScreen extends Component {
 
 }
 
-function writeUserData(userId, name, email) {
-    console.log('writeUserData', userId, name, email);
-    // Add a new document in collection "cities"
- setDoc(doc(firestoreDB, "users", userId), {
+function writeUserData(name, email) {
+    // Add a new document in collection "users"
+ setDoc(doc(firestoreDB, "users", firebaseAuth.currentUser.uid), {
         name: name,
         email: email
     }).then(() => {
