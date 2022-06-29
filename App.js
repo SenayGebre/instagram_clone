@@ -1,5 +1,6 @@
 import LandingScreen from './components/auth/Landing';
 import RegisterScreen from './components/auth/Register';
+import MainScreen from './components/Main';
 import  {firebaseAuth} from './src/firebase/config';
 import LoginScreen from './components/auth/Login';
 import { NavigationContainer } from  "@react-navigation/native";
@@ -7,6 +8,12 @@ import { createStackNavigator } from  "@react-navigation/stack";
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { View, Text, Button} from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import rootReducer from './redux/reducers';
+import thunk from 'redux-thunk';
+const store = createStore(reducer, applyMiddleware(thunk));
+
 
 const Stack = createStackNavigator();
 
@@ -67,10 +74,10 @@ export default class App extends Component {
       }
 
       return (
-        <View>
-          <Text>You are logged in</Text>
-          <Button title = "Sign Out" onPress={()=> this.onSignOut()}/>
-        </View>
+
+        <Provider store={store}>
+        <MainScreen/>
+        </Provider>
       )
   }
 }
